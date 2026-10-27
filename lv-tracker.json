@@ -6,24 +6,24 @@
       "mpod_name": "u0",
       "voltage": 5.3,
       "current": 2.5,
-      "sense_rails": [4.6, 5.5]
+      "sense_rails": [4.6, 5.6]
     },
     "ANA_POS_VIN": {
       "mpod_name": "u1",
       "voltage": 5.95,
       "current": 2.5,
-      "sense_rails": [5.0,6.2]
+      "sense_rails": [5.0,6.3]
     },
     "ANA_NEG_VIN": {
       "mpod_name": "u2",
       "voltage": 5.7,
       "current": 2.5,
-      "sense_rails": [5.0,6.0]
+      "sense_rails": [5.0,6.2]
     },
     "HY_VIN_A": {
       "mpod_name": "u3",
       "voltage": 5.2,
-      "current": 2.5,
+      "current": 3.0,
       "sense_rails": [5.0,6.0]
     }
   }
