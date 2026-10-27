@@ -151,8 +151,10 @@ def getAllLCDInfo(serial, address=0):
     return vals
 
 def remoteMode(state, address=0):
-    """Enable or Disable Remote mode. Other commands over usb automatically set PS to remote"""
-    """state - True/False = Enable/Disable"""
+    """Enable or Disable Remote mode. Other commands over usb automatically set PS to remote
+    
+    state - True/False = Enable/Disable
+    """
     if state == True:
         sdpWrite("SESS"+"%02d"%address+"\r", ser)
     else:
@@ -170,18 +172,18 @@ def main():
                         description='Remotely controls the HCal power supply.')
     which = parser.add_mutually_exclusive_group(required=True)
     which.add_argument('--serial-vid-pid', type=str,
-                        help='Serial ID and then the VID:PID separated by a space.')
+                        help='Serial ID and then the VID:PID separated by a "/".')
     which.add_argument('--name', type=str,
                         help=f'Look-up serial-vid-pid by name in {name_file}')
-    parser.add_argument('-output', '--output', default=None,
-                        help = "Change output state")
-    parser.add_argument('-remote', '--remote', default=None,
-                        help = "Change remote mode state")
-    parser.add_argument('-set_V', '--voltage', type=float, default=None,
+    parser.add_argument('--output', default=None,
+                        help = "Change output state ('on' or 'off')")
+    parser.add_argument('--remote', default=None,
+                        help = "Change remote mode state ('on' or 'off')")
+    parser.add_argument('--voltage', type=float, default=None,
                         help = "Set channel voltage")
-    parser.add_argument('-set_I', '--current', type=float, default=None,
+    parser.add_argument('--current', type=float, default=None,
                         help = "Set channel current")
-    parser.add_argument('-read', '--read', action='store_true', default=False,
+    parser.add_argument('--read', action='store_true', default=False,
                         help = "Read channel voltage and current")
 
     args = parser.parse_args()
@@ -194,8 +196,7 @@ def main():
         serial_id = spec["serial"]
         vid_pid = spec["vid_pid"]
     else:
-        serial_id = args.serial
-        vid_pid = args.vid_pid
+        serial_id, vid_pid = args.serial_vid_pid.split('/')
 
     devices = return_usb_info(verbose=False)
     device_path = get_device_from_serial(devices, serial_id, vid_pid)
