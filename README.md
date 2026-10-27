@@ -1,5 +1,5 @@
-# Calo Power Supply Controls
-The calorimeters' power supplies are controlled by a few python scripts.
+# LDMX Power Supply Control
+The power supplies are controlled by a few python scripts.
 
 ## MPOD Control
 The ECal and Tracker LV and HV are connected to MPODs.
@@ -25,6 +25,7 @@ Two environment variables are checked
 
 ## HCal PS Control
 The HCal power supplies are serially connected to the DAQ server over USB.
+The HV and LV power supplies are B&K Precision 1698.
 
 ### Dependencies
 
