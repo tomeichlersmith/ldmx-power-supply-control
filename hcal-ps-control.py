@@ -158,43 +158,51 @@ def remoteMode(state, address=0):
     else:
         sdpWrite("ENDS"+"%02d"%address+"\r", ser)
 
-
-
-
-parser = argparse.ArgumentParser(
-                    prog='s30xl_power.py',
-                    description='Remotely controls the power supply.')
-
-parser.add_argument('-serial', type=str,
-                    help = "Serial number of the power supply to control")
-parser.add_argument('-vid_pid', type=str, 
-                    help = "VID:PID of the power supply to control")
-parser.add_argument('-output', '--output', default=None,
-                    help = "Change output state")
-parser.add_argument('-remote', '--remote', default=None,
-                    help = "Change remote mode state")
-parser.add_argument('-set_V', '--voltage', type=float, default=None,
-                    help = "Set channel voltage")
-parser.add_argument('-set_I', '--current', type=float, default=None,
-                    help = "Set channel current")
-parser.add_argument('-read', '--read', action='store_true', default=False,
-                    help = "Read channel voltage and current")
-
-   
 def main():
+    name_file = Path(__file__).parent / '.hcal-power-supply-names.json'
+    names = {}
+    if name_file.is_file():
+        with open(name_file) as f:
+            names = json.load(f)
+
+    parser = argparse.ArgumentParser(
+                        prog='hcal-power-control.py',
+                        description='Remotely controls the HCal power supply.')
+    which = parser.add_mutually_exclusive_group(required=True)
+    which.add_argument('--serial-vid-pid', type=str,
+                        help='Serial ID and then the VID:PID separated by a space.')
+    which.add_argument('--name', type=str,
+                        help=f'Look-up serial-vid-pid by name in {name_file}')
+    parser.add_argument('-output', '--output', default=None,
+                        help = "Change output state")
+    parser.add_argument('-remote', '--remote', default=None,
+                        help = "Change remote mode state")
+    parser.add_argument('-set_V', '--voltage', type=float, default=None,
+                        help = "Set channel voltage")
+    parser.add_argument('-set_I', '--current', type=float, default=None,
+                        help = "Set channel current")
+    parser.add_argument('-read', '--read', action='store_true', default=False,
+                        help = "Read channel voltage and current")
+
     args = parser.parse_args()
 
-    if (args.serial is None):
-        print("Error: Please provide the serial number of the power supply to control using the -serial argument.")
-        return
-    if (args.vid_pid is None):
-        print("Error: Please provide the VID:PID of the power supply to control using the -vid_pid argument.")
-        return
-    
+    if args.name is not None:
+        if args.name not in names:
+            print(f"ERROR: {args.name} is not listed in the short name files {name_file}")
+            return
+        spec = names[args.name]
+        serial_id = spec["serial"]
+        vid_pid = spec["vid_pid"]
+    else:
+        serial_id = args.serial
+        vid_pid = args.vid_pid
+
     devices = return_usb_info(verbose=False)
-    device_path = get_device_from_serial(devices, args.serial, args.vid_pid)
+    device_path = get_device_from_serial(devices, serial_id, vid_pid)
     if device_path is None:
-        print(f"Error: No device found with serial number {args.serial} and VID:PID {args.vid_pid}")
+        print(f"Error: No device found with serial number {serial} and VID:PID {vid_pid}")
+        if args.name is not None:
+            print(f"       Looked up by name {args.name} in {name_file}")
         return
     
     ser = serial.Serial(device_path, timeout=1)

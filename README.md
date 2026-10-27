@@ -34,9 +34,29 @@ Use the `USBmappingJSON.sh` script to list out the different devices connected v
 ```
 ./USBmappingJSON.sh
 ```
-From this list, you can use the `Serial` column as the `-serial` argument to the power supply
-control script.
-For example, `-read` the current settings.
+From this list, you can use the `Serial` column as the `--serial` argument and the VID:PID
+column as the `--vid_pid` argument. You can also create a JSON file in this directory
+named `.hcal-power-supply-names.json` to use as a cache for these values. They only
+depend on the power supply actually in use.
+The file used for the 2026 cosmics test stand looked like
+```json
+{
+  "hcal-hv": {
+    "serial": "0000:00:14.0",
+    "vid_pid": "067b:2303"
+  },
+  "hcal-lv": {
+    "serial": "AL05K8T0",
+    "vid_pid": "0403:6001"
+  }
+}
 ```
-python hcal-ps-control.py -serial <ID> -read
+
+And then you `--read` the current settings.
+```
+sudo python hcal-ps-control.py --name hcal-hv --read
+```
+and turn on/off with the `--output` argument.
+```
+sudo python hcal-ps-control.py --name hcal-lv --output True
 ```
