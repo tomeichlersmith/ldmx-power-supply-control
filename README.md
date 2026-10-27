@@ -29,3 +29,13 @@ The HCal power supplies are serially connected to the DAQ server over USB.
 ### Dependencies
 
 ### Usage
+Use the `USBmappingJSON.sh` script to list out the different devices connected via USB.
+```
+./USBmappingJSON.sh
+```
+From this list, you can use the `Serial` column as the `-serial` argument to the power supply
+control script.
+For example, `-read` the current settings.
+```
+python hcal-ps-control.py -serial <ID> -read
+```
