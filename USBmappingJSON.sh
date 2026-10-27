@@ -11,8 +11,8 @@ fi
 lsusb_output=$(lsusb)
 
 if [ "$OUTPUT_JSON" = false ]; then
-    echo "Device       Bus  Dev  USB Device File           VID:PID   Serial           Description"
-    echo "------------ ---- ---- ------------------------- --------- ---------------- ------------------------------------"
+    echo "Device        Bus  Dev  USB Device File           VID:PID   Serial           Description"
+    echo "------------- ---- ---- ------------------------- --------- ---------------- ------------------------------------"
 else
     echo "["
     first=true
@@ -59,7 +59,7 @@ for dev in /dev/ttyUSB*; do
                 fi
                 
                 if [ "$OUTPUT_JSON" = false ]; then
-                    printf "%-12s %-4s %-4s %-25s %-9s %-16s %s\n" "$dev" "$busnum" "$devnum" "$usbdev" "$vid_pid" "$serial" "$description"
+                    printf "%-13s %-4s %-4s %-25s %-9s %-16s %s\n" "$dev" "$busnum" "$devnum" "$usbdev" "$vid_pid" "$serial" "$description"
                 else
                     # JSON output
                     if [ "$first" = false ]; then
@@ -80,7 +80,7 @@ EOF
                 fi
             else
                 if [ "$OUTPUT_JSON" = false ]; then
-                    printf "%-12s %-4s %-4s %-25s %-9s %-16s %s\n" "$dev" "N/A" "N/A" "N/A" "N/A" "N/A" "N/A"
+                    printf "%-13s %-4s %-4s %-25s %-9s %-16s %s\n" "$dev" "N/A" "N/A" "N/A" "N/A" "N/A" "N/A"
                 fi
             fi
         fi
