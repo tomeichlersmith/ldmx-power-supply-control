@@ -6,3 +6,7 @@
 
 # python cache
 __pycache__
+
+# generated images and iv json
+iv_*.json
+*.png
