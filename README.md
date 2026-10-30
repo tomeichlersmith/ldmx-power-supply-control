@@ -27,6 +27,11 @@ Two environment variables are checked
 The HCal power supplies are serially connected to the DAQ server over USB.
 The HV and LV power supplies are B&K Precision 1698.
 
+> [!NOTE]
+> There is an initial pulse of current that is relatively far above the
+> normal operating current (~1A), so the power supply current limit should
+> be set to 3A to allow this pulse through when the power is initially connected.
+
 ### Dependencies
 
 ### Usage
