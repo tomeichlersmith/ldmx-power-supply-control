@@ -63,3 +63,6 @@ and turn on/off with the `--output` argument.
 ```
 sudo python hcal-ps-control.py --name hcal-lv --output True
 ```
+In order to avoid `sudo` you can ask your friendly neighborhood
+administrator to `sudo chmod 666` the `/dev/ttyUSBii` file that
+is reported by the USB mapping to be connected the power supply.
